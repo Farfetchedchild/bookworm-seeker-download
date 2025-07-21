@@ -61,7 +61,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				library: {
+					primary: 'hsl(var(--library-primary))',
+					accent: 'hsl(var(--library-accent))',
+					surface: 'hsl(var(--library-surface))',
+					'surface-hover': 'hsl(var(--library-surface-hover))',
+					'text-primary': 'hsl(var(--library-text-primary))',
+					'text-secondary': 'hsl(var(--library-text-secondary))'
 				}
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-surface': 'var(--gradient-surface)',
+				'gradient-accent': 'var(--gradient-accent)'
+			},
+			boxShadow: {
+				'book': 'var(--shadow-book)',
+				'card': 'var(--shadow-card)',
+				'glow': 'var(--shadow-glow)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
