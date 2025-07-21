@@ -10,7 +10,9 @@ import {
   Clock,
   Star,
   Menu,
-  X
+  X,
+  MessageCircle,
+  Server
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -28,8 +30,10 @@ const Navigation = ({ activeTab, onTabChange, downloadQueue }: NavigationProps) 
   const navigationItems = [
     { id: "home", label: "Home", icon: Home },
     { id: "search", label: "Search", icon: Search },
+    { id: "requests", label: "Requests", icon: MessageCircle },
     { id: "library", label: "My Library", icon: Library },
     { id: "downloads", label: "Downloads", icon: Download, badge: downloadQueue },
+    { id: "prowlarr", label: "Indexers", icon: Server },
     { id: "trending", label: "Trending", icon: TrendingUp },
     { id: "recent", label: "Recent", icon: Clock },
     { id: "favorites", label: "Favorites", icon: Star },

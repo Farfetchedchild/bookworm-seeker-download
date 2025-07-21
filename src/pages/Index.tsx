@@ -2,7 +2,9 @@ import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import HomePage from "@/components/HomePage";
 import SearchPage from "@/components/SearchPage";
+import RequestSystem from "@/components/RequestSystem";
 import DownloadManager from "@/components/DownloadManager";
+import ProwlarrIntegration from "@/components/ProwlarrIntegration";
 import SettingsPage from "@/components/SettingsPage";
 import { useToast } from "@/hooks/use-toast";
 
@@ -68,6 +70,8 @@ const Index = () => {
         return <HomePage onTabChange={setActiveTab} />;
       case "search":
         return <SearchPage onDownload={handleDownload} />;
+      case "requests":
+        return <RequestSystem />;
       case "downloads":
         return (
           <DownloadManager
@@ -78,6 +82,8 @@ const Index = () => {
             onRetry={handleDownloadAction("retry")}
           />
         );
+      case "prowlarr":
+        return <ProwlarrIntegration />;
       case "settings":
         return <SettingsPage />;
       case "library":
