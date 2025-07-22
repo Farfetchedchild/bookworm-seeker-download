@@ -4,23 +4,26 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import SearchBar from "./SearchBar";
 import BookCard from "./BookCard";
+import TorrentSelectionDialog from "./TorrentSelectionDialog";
 
 interface SearchPageProps {
   onDownload: (bookId: string) => void;
 }
 
 const SearchPage = ({ onDownload }: SearchPageProps) => {
+  const [selectedBook, setSelectedBook] = useState<{id: string; title: string; author: string} | null>(null);
+  const [isTorrentDialogOpen, setIsTorrentDialogOpen] = useState(false);
   const [searchResults, setSearchResults] = useState([
     {
       id: "1",
       title: "JavaScript: The Definitive Guide",
       author: "David Flanagan",
-      cover: "",
+      cover: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=600&fit=crop",
       rating: 4.5,
       year: 2020,
       pages: 1096,
       format: ["PDF", "EPUB"],
-      description: "Master the world's most-used programming language. Programmers, sysadmins, and web developers use JavaScript.",
+      description: "Master the world's most-used programming language. This comprehensive guide covers everything from basic syntax to advanced programming techniques. Perfect for developers who want to understand JavaScript deeply.",
       genre: ["Programming", "Web Development"],
       language: "English",
       size: "25.4 MB"
@@ -29,12 +32,12 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
       id: "2",
       title: "You Don't Know JS",
       author: "Kyle Simpson",
-      cover: "",
+      cover: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=600&fit=crop",
       rating: 4.7,
       year: 2021,
       pages: 278,
       format: ["PDF", "MOBI", "EPUB"],
-      description: "This is a series of books diving deep into the core mechanisms of the JavaScript language.",
+      description: "This is a series of books diving deep into the core mechanisms of the JavaScript language. Each book takes on specific core parts of the language that are most commonly misunderstood or under-understood.",
       genre: ["Programming", "JavaScript"],
       language: "English",
       size: "12.1 MB"
@@ -43,12 +46,12 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
       id: "3",
       title: "Clean Architecture", 
       author: "Robert C. Martin",
-      cover: "",
+      cover: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=600&fit=crop",
       rating: 4.6,
       year: 2017,
       pages: 432,
       format: ["PDF"],
-      description: "A craftsman's guide to software structure and design. Learn to build systems that are testable and maintainable.",
+      description: "A craftsman's guide to software structure and design. Learn to build systems that are testable and maintainable. Uncle Bob's essential guide to creating software architecture that stands the test of time.",
       genre: ["Programming", "Software Architecture"],
       language: "English",
       size: "18.9 MB"
@@ -57,12 +60,12 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
       id: "4",
       title: "System Design Interview",
       author: "Alex Xu",
-      cover: "",
+      cover: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=600&fit=crop",
       rating: 4.8,
       year: 2020,
       pages: 322,
       format: ["PDF", "EPUB"],
-      description: "An insider's guide to system design interviews at tech companies. Learn how to design scalable systems.",
+      description: "An insider's guide to system design interviews at tech companies. Learn how to design scalable systems step by step. Covers everything from load balancers to database sharding with real-world examples.",
       genre: ["Programming", "System Design"],
       language: "English",
       size: "16.7 MB"
@@ -71,12 +74,12 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
       id: "5",
       title: "Designing Data-Intensive Applications",
       author: "Martin Kleppmann",
-      cover: "",
+      cover: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=600&fit=crop",
       rating: 4.9,
       year: 2017,
       pages: 616,
       format: ["PDF", "MOBI"],
-      description: "The big ideas behind reliable, scalable, and maintainable systems.",
+      description: "The big ideas behind reliable, scalable, and maintainable systems. This book explores the fundamental principles of data systems design, covering everything from databases to stream processing.",
       genre: ["Programming", "Data Engineering"],
       language: "English",
       size: "23.5 MB"
@@ -85,12 +88,12 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
       id: "6",
       title: "The Algorithm Design Manual",
       author: "Steven S. Skiena",
-      cover: "",
+      cover: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=600&fit=crop",
       rating: 4.4,
       year: 2020,
       pages: 748,
       format: ["PDF"],
-      description: "A comprehensive guide to algorithm design and analysis techniques.",
+      description: "A comprehensive guide to algorithm design and analysis techniques. Contains hundreds of algorithmic resources and practical examples, making it an essential reference for any programmer.",
       genre: ["Programming", "Algorithms"],
       language: "English",
       size: "21.8 MB"
@@ -108,6 +111,23 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+  };
+
+  const handleDownloadClick = (bookId: string) => {
+    const book = searchResults.find(b => b.id === bookId);
+    if (book) {
+      setSelectedBook({
+        id: book.id,
+        title: book.title,
+        author: book.author
+      });
+      setIsTorrentDialogOpen(true);
+    }
+  };
+
+  const handleTorrentSelected = (torrent: any, bookId: string) => {
+    onDownload(bookId);
+    console.log("Selected torrent:", torrent, "for book:", bookId);
   };
 
   const handleViewDetails = (bookId: string) => {
@@ -164,7 +184,7 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
             <BookCard
               key={book.id}
               book={book}
-              onDownload={onDownload}
+              onDownload={handleDownloadClick}
               onViewDetails={handleViewDetails}
             />
           ))}
@@ -200,7 +220,7 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
                     </div>
                     
                     <div className="flex gap-2 pt-2">
-                      <Button onClick={() => onDownload(book.id)} size="sm" className="bg-gradient-primary hover:opacity-90">
+                      <Button onClick={() => handleDownloadClick(book.id)} size="sm" className="bg-gradient-primary hover:opacity-90">
                         Download
                       </Button>
                       <Button onClick={() => handleViewDetails(book.id)} variant="outline" size="sm">
@@ -221,6 +241,14 @@ const SearchPage = ({ onDownload }: SearchPageProps) => {
           Load More Results
         </Button>
       </div>
+
+      {/* Torrent Selection Dialog */}
+      <TorrentSelectionDialog
+        open={isTorrentDialogOpen}
+        onOpenChange={setIsTorrentDialogOpen}
+        book={selectedBook}
+        onDownloadSelected={handleTorrentSelected}
+      />
     </div>
   );
 };
